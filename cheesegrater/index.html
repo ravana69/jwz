@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	  "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+<!-- Mirrored from www.jwz.org/cheesegrater/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:22 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<HEAD>
+ <TITLE>Cheesegrater + Portalizer</TITLE>
+ <meta name="viewport" content="width=device-width" />
+ <link rel="shortcut icon" href="https://www.jwz.org/favicon.ico" type="image/x-icon" />
+ <link rel="stylesheet" type="text/css" href="https://www.jwz.org/jwz.css" />
+ <SCRIPT ASYNC type="text/javascript" SRC="https://www.jwz.org/jwz.js"></SCRIPT>
+</HEAD>
+<BODY CLASS="jwzw">
+
+<BR>
+<TABLE WIDTH="100%" BORDER=0 CELLSPACING=0 CELLPADDING=8>
+
+<TR><TD VALIGN=TOP BGCOLOR="#666666" COLSPAN=2>
+ <FONT COLOR="#F5F5F5" SIZE="+3"><B><TT>Cheesegrater + Portalizer</TT></B></FONT></TD></TR>
+
+</TABLE>
+
+<UL>
+
+<P> Back in 2002, there were still many web sites that did not provide
+RSS feeds of their updates, or that provided RSS feeds that included
+only the headlines and not the full articles.
+
+<P> That's much less true today, thankfully.
+
+<P> Bur back in those bad old days, I wrote this program to generate
+RSS feeds for certain sites that didn't provide them.  It does this by
+parsing the HTML on various sites, and converting that to RSS.
+
+This kind of hack is known as
+<A HREF="https://web.archive.org/web/20030624233303/http://www.catb.org:80/~esr/jargon/html/S/screen-scraping.html">
+"screen scraping"</A>, so I named this program "cheesegrater."
+
+<P> Yes, there is custom code for each site, since every site in the
+world has their own idiosyncratic HTML layout.  Yes, this is fragile,
+and some day, possibly this afternoon, the maintainers of these sites
+will change their HTML slightly and I'll have to change my code too.
+Yes, this all sucks.  This is the very problem that RSS is supposed to
+solve.  The right way to fix this is to convince those remaining
+dinosaur webmasters to provide decent RSS feeds of their own.
+(Good luck with that.)
+
+<UL>
+ <P>
+ <TABLE CELLPADDING=6 CELLSPACING=0 BORDER=0>
+  <TR>
+   <TD VALIGN=TOP NOWRAP>
+    <TT><B><A HREF="https://www.jwz.org/cheesegrater/cheesegrater.pl">cheesegrater.pl</A> </B></TT></TD>
+   <TD VALIGN=TOP>
+     Given a bunch of URLs on the command line, it downloads the
+     content and converts it to RSS, writing that to the <TT>rss/</TT>
+     directory.  It only works with the particular URLs that the
+     source knows about.  It's a small matter of hacking to make
+     it know about more.  Read the code for enlightenment.
+     Let cut-and-paste be your guide.
+   </TD>
+  </TR>
+
+  <TR>
+   <TD VALIGN=TOP NOWRAP>
+    <TT><B><A HREF="https://www.jwz.org/cheesegrater/portalizer.pl">portalizer.pl</A> </B></TT></TD>
+   <TD VALIGN=TOP>
+     Given a bunch of RSS files on the command line, this
+     creates a single HTML file showing their contents, putting
+     each entry in a pretty little box.  This <I>should</I> work
+     on any RSS file, but I wouldn't swear to that.
+
+     <P> The first time you run it, it's going to just dump the content
+     of all of the RSS files into the document, one after the other.
+     But on subsequent runs, it will be more clever: it does not add
+     an entry to the HTML file if that entry is present already, and
+     it adds new entries at the top.  So, as new entries show up in
+     subsequent versions of the RSS files, they will show up at the
+     top of the HTML file in the order they were added.
+
+     <P> Items drop off the end of the HTML file when it gets too
+     long (200 entries, by default.)
+
+   </TD>
+  </TR>
+
+  <TR>
+   <TD VALIGN=TOP NOWRAP>
+    <TT><B><A HREF="https://www.jwz.org/cheesegrater/cheesecast.pl">cheesecast.pl</A> </B></TT></TD>
+   <TD VALIGN=TOP>
+     This takes an RSS file and translates it into something that
+     <A HREF="https://web.archive.org/web/20070314232531/http://www.getmiro.com:80/">Miro</A> (and probably iTunes)
+     will recognize as a "podcast".  Basically, it takes the source
+     feed, parses through the HTML in each entry, and generates
+     various <TT>&lt;itunes:xxx&gt;</TT> and
+     <TT>&lt;enclosure&gt;</TT> tags.  This is useful if a site
+     provides an old-style RSS feed, but you want to use a program
+     like Miro to auto-download the content they link to.
+
+   </TD>
+  </TR>
+
+ </TABLE>
+</UL>
+
+<P> I did this using very vanilla Perl, using regular expressions all
+over the place, and without any esoteric CPAN modules, without an XML
+parser, etc., etc.  I did it this way because that was easier.
+Perhaps the code would be simpler and more correct if I had written it
+in another way, but I didn't care to take the time to research what
+APIs were available to do this differently.  And the only standard
+I care about complying with is "does it work, or not?"
+So, it works for me.  If it breaks, feel free to keep both pieces.
+
+
+</UL>
+<HR>
+<I>&copy; 2002-2008 <A HREF="https://www.jwz.org/">Jamie Zawinski</A>
+<A HREF="https://www.jwz.org/about.html">&lt;jwz@jwz.org&gt;</A></I>
+<FONT size="-2"><I>
+<BR>Some people, when confronted with a problem, think "I know,
+    I'll use regular expressions."  Now they have two problems.
+</I></FONT>
+</BODY>
+
+<!-- Mirrored from www.jwz.org/cheesegrater/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:22 GMT -->
+</HTML>

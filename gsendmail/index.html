@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	  "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+<!-- Mirrored from www.jwz.org/gsendmail/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:22 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<HEAD>
+ <TITLE>GSendMail</TITLE>
+ <meta name="viewport" content="width=device-width" />
+ <link rel="shortcut icon" href="https://www.jwz.org/favicon.ico" type="image/x-icon" />
+ <link rel="stylesheet" type="text/css" href="https://www.jwz.org/jwz.css" />
+ <SCRIPT ASYNC type="text/javascript" SRC="https://www.jwz.org/jwz.js"></SCRIPT>
+ <STYLE TYPE="text/css">
+  pre { overflow-x: hidden; }
+ </STYLE>
+</HEAD>
+<BODY CLASS="jwzw">
+
+<TABLE WIDTH="100%" BORDER=0 CELLSPACING=0 CELLPADDING=8>
+
+<TR><TD VALIGN=TOP BGCOLOR="#666666" COLSPAN=2>
+ <FONT COLOR="#F5F5F5" SIZE="+3"><B><TT>GSendMail</TT></B></FONT></TD></TR>
+
+</TABLE>
+
+<UL>
+
+<P> This is a simple standalone mail composition tool for Unix.  It lets
+you fill in From, To, CC, and Subject, and compose a text/plain message
+in a fixed-width text area with word-wrap.  It does a fair amount of
+sanity checking, but other than that, it is frill-free: no HTML, no
+attachments, no address book.
+
+</UL>
+<P>
+
+<IMG ALIGN=RIGHT SRC="https://www.jwz.org/gsendmail/gsendmail.gif" WIDTH=372 HEIGHT=247>
+
+<FONT SIZE="+2"><B>The problem:</B></FONT>
+<UL>
+<P>
+
+        If you install Firefox, or a web-browser-only version of Mozilla
+        (that is, not the "Communicator" version, which includes the
+        mail reader) then you cannot click on <B>mailto:</B> links in
+        web pages.
+
+<P>
+        This is, of course, crazy, since <B>mailto:</B> links have been
+        supported in all previous web browsers that were not also mail
+        readers, including, but not limited to, Netscape 1.0 and NCSA Mosaic.
+<P>
+        When I learned that they were planning on doing this crazy
+        thing, back in like 1997, I tried to talk them out of it, but
+        it was no use.  ``Making that work would be too hard,'' they
+        said.  Apparently it remained too hard for the next 8+ years.
+        It's shit like this that makes me glad to be out of there.
+
+</UL>
+<P><FONT SIZE="+2"><B>The Solution:</B></FONT>
+<UL>
+<P>
+        First, get Firefox, or Mozilla 1.6 or newer.  There's no way
+        to do this in any older release of Mozilla.
+
+<P>
+        Next, install this program, <B>gsendmail.</B>
+        Here it is as a gzipped tar file:
+
+        <P><UL>
+            <A HREF="https://www.jwz.org/gsendmail/gsendmail-1.3.tar.gz"><B>gsendmail-1.3.tar.gz</B></A>
+        </UL>
+
+        <P> It requires <A HREF="https://web.archive.org/web/20000520045047/http://www.gnome.org:80/">GNOME</A> 1.0
+        and <A HREF="https://web.archive.org/web/20000614223049/http://www.gtk.org:80/">GTK</A> 1.2, or newer.
+        Build it like so:
+
+<P><UL><TT><B>
+                ./configure<BR>
+                make<BR>
+                make install<BR>
+</B></TT></UL>
+
+        <P> Then you need to tell Mozilla to invoke <B>gsendmail</B> 
+        any time a <B>mailto:</B> URL is loaded.  You do this by adding
+        a couple of lines to the the <B>user.js</B> file deep under your
+        Mozilla directory.  That file may not exist already, but there
+        should be a directory with a name something like
+        <B>~/.mozilla/default/<I>pm82dm6t</I>.slt/</B> that has a bunch
+        of files in it; <B>user.js</B> goes there, and these lines go in
+        it:  If you're using Firefox, it will be called
+        something like <B>~/.mozilla/firefox/<I>pm82dm6t</I>.default/</B>
+        instead.
+
+<P><UL><PRE><B>user_pref("network.protocol-handler.external.mailto", "true");
+user_pref("network.protocol-handler.app.mailto", "gsendmail");</B></PRE></UL>
+
+        <P> Restart Mozilla, click on <B>mailto:</B> links, and enjoy!  <P>
+
+        <P> If that doesn't work, then maybe Mozilla is already
+        configured to hand mailto: URLs to GNOME, via the
+        <B>gnome-moz-remote</B> program.  If mailto: URLs launch 
+        <A HREF="https://web.archive.org/web/20040609053731/http://www.novell.com:80/products/evolution/">Evolution</A>,
+        that's probably what's going on.  In that case, you need to tell
+        GNOME to use <B>gsendmail</B> for mailto: as well.  
+
+        <P> <B>In Gnome 2.2 - 2.6:</B> run <B>gnome-file-types-properties</B>.
+        Under <I>"Internet Services",</I> select 
+        <I>"Electronic mail transmission",</I> <I>"Edit",</I> and
+        replace <I>evolution</I> with <I>gsendmail</I>.  That will
+        write the file
+        <TT><B>~/.gnome/application-info/user.applications</B></TT>.
+
+        <P> <B>In Gnome 2.8:</B> run
+        <B>gnome-default-applications-properties</B>.
+        Under <I>"Mail Reader",</I> select 
+        <I>"Custom Mail Reader",</I> and type
+        <NOBR><I>gsendmail %s</I>.</NOBR>  That will write the data
+        into the database under <TT><B>~/.gconf/</B></TT>,
+        and you're good to go.
+
+        <P> You can verify the setting by running:
+        <NOBR><TT>gconftool-2 -g /desktop/<WBR>gnome/<WBR>url-handlers/<WBR>mailto/<WBR>command</TT></NOBR>
+
+<P>
+</UL>
+
+
+<HR>
+<I>&copy; 2000-2005 <A HREF="https://www.jwz.org/">Jamie Zawinski</A>
+<A HREF="https://www.jwz.org/about.html">&lt;jwz@jwz.org&gt;</A></I>
+<FONT size="-2"><I>
+<BR>Sometimes you get the elevator and sometimes you get the shaft.
+</I></FONT>
+</BODY>
+
+<!-- Mirrored from www.jwz.org/gsendmail/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:22 GMT -->
+</HTML>

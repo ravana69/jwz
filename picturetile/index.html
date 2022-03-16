@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	  "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+<!-- Mirrored from www.jwz.org/picturetile/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:22 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<HEAD>
+ <TITLE>Picture Tile</TITLE>
+ <meta name="viewport" content="width=device-width" />
+ <link rel="shortcut icon" href="https://www.jwz.org/favicon.ico" type="image/x-icon" />
+ <link rel="stylesheet" type="text/css" href="https://www.jwz.org/jwz.css" />
+ <SCRIPT ASYNC type="text/javascript" SRC="https://www.jwz.org/jwz.js"></SCRIPT>
+</HEAD>
+<BODY CLASS="jwzw">
+
+<BR>
+<TABLE WIDTH="100%" BORDER=0 CELLSPACING=0 CELLPADDING=8>
+
+<TR><TD VALIGN=TOP BGCOLOR="#666666" COLSPAN=2>
+ <FONT COLOR="#F5F5F5" SIZE="+3"><B><TT>Picture Tile</TT></B></FONT></TD></TR>
+
+</TABLE>
+
+<UL>
+
+<IMG SRC="https://www.jwz.org/picturetile/picturetile.jpg"
+    style="float: right; width: 50%; height: auto; max-width: 199px; max-height: 397px;">
+
+This program takes a bunch of images and randomly tiles them into one
+large image.  The images need not be of the same size or aspect ratio.
+Images are chosen randomly, and no image will be used more than once.
+
+<P> Back when I used a film camera, I used to cover one of my walls
+with snapshots, but now that I use a digital camera, I no longer have
+prints lying around.  I wrote this program to make it easy to cover my
+wall with digital prints in the form of large posters.
+
+<P> The image to the right is an example of the kind of layout it can
+do: note that the source images are of a variety of sizes and shapes.
+
+</UL>
+ <TABLE WIDTH="50%" BORDER=0 CELLSPACING=0 CELLPADDING=8>
+ <TR><TD VALIGN=TOP BGCOLOR="#666666" COLSPAN=2>
+ <FONT COLOR="#F5F5F5" SIZE="+1"><B><TT>Download:</TT></B></FONT></TD></TR>
+ </TABLE>
+<UL>
+ <A HREF="https://www.jwz.org/picturetile/picturetile.pl"><B>picturetile.pl</B></A>
+
+ <P> The
+ <A HREF="https://web.archive.org/web/20150510072631/http://search.cpan.org/search?module=Image::Magick">Image::Magick</A>
+ Perl module is required.
+
+</UL>
+ <TABLE WIDTH="50%" BORDER=0 CELLSPACING=0 CELLPADDING=8>
+ <TR><TD VALIGN=TOP BGCOLOR="#666666" COLSPAN=2>
+ <FONT COLOR="#F5F5F5" SIZE="+1"><B><TT>Instructions:</TT></B></FONT></TD></TR>
+ </TABLE>
+<UL>
+ See the comments at the top of the script for descriptions of the
+ various command-line options.  It's fairly straightforward, but
+ some arithmetic is required.
+
+</UL>
+ <TABLE WIDTH="50%" BORDER=0 CELLSPACING=0 CELLPADDING=8>
+ <TR><TD VALIGN=TOP BGCOLOR="#666666" COLSPAN=2>
+ <FONT COLOR="#F5F5F5" SIZE="+1"><B><TT>Example:</TT></B></FONT></TD></TR>
+ </TABLE>
+<UL>
+
+<P> To print out my posters, I first picked around 300 of my favorite
+photos from the last several years, and copied them into one place.
+Then, I did this:
+
+<A HREF="https://www.jwz.org/picturetile/picturetile2.jpg"><IMG
+ SRC="https://www.jwz.org/picturetile/picturetile2b.jpg" 
+ STYLE="float: right; width: 50%; max-width: 250px; max-height: 183px;
+   border: 1px solid;"></A>
+<I><FONT SIZE="-1">The end result!</FONT></I>
+
+<P>
+<PRE STYLE="font-size: 8pt">
+ picturetile.pl -v         \
+    --size 12900x25200     \
+    --directory <I>my-photos</I>  \
+    --scale 0.4882         \
+    --margin 37            \
+    --border 75            \
+    --pages 2              \
+    out.tiff
+</PRE>
+
+<P> That gave me two output files, <B>out1.tiff</B> and
+<B>out2.tiff</B>, each of which was 490&nbsp;MB and measured
+3&frac12;'&nbsp;&times;&nbsp;7' at 300 DPI.  These files were composed
+of roughly 5&quot; photos, with an overall &frac14;&quot; border
+around the whole image.  Each sheet ended up with roughly 150 pictures
+on it (that's why I started with 300 pictures.)
+
+<P> As it happens, I have a friend who has access to a
+<A HREF="https://web.archive.org/web/20050811085642/http://www.epson.com:80/cgi-bin/Store/WideFormat/WideFormatDetail.jsp?BV_UseBVCookie=yes&amp;oid=-12982&amp;category=">printer</A>
+that can print on paper that big!  For those of you who don't have
+friends with access to such great toys at work, you'll have to take
+your files to Kinko's or similar to get them printed.
+
+<P> Mounting them to the wall was the next challenge, for two reasons:
+first, my walls are concrete; and second, it's a lot of paper: giant
+posters like this are pretty heavy!  What I ended up doing was getting
+two huge sheets of foam-core at a local art-supply store, mounting
+those to the wall with double-sided sticky tape, and then mounting the
+prints to the foam-core.  Initially I planned to use thumb tacks, but
+that didn't work out, so I ended up using the sticky tape to mount the
+prints to the foam-core.  I could have mounted the prints directly to
+the wall, but this way it will be possible (but not easy!) to move
+them without destroying them.
+
+<BR CLEAR=BOTH>
+
+<!--
+setenv TMPDIR /a/jwz
+picturetile.pl -vv --size 12900x25200 --directory ~/tmp/wall/SCALED/ --margin 37 --border 75 --pages 3 --quality 95 out.tiff
+
+picturetile.pl -vv --size 10500x25200 --directory ~/tmp/wall/SCALED/ --margin 37 --border 75 --pages 3 --quality 95 ../out3/out.tiff
+
+picturetile.pl -vv --size 12900x25200 --directory ~/tmp/wall/SCALED/ --margin 37 --border 75 --pages 3 --quality 95 ../out1/out.tiff
+43" x 84" x 3 = 108 dup (353 + 108 = 461)
+-->
+
+
+</UL>
+
+<HR>
+<I>&copy; 2005 <A HREF="https://www.jwz.org/">Jamie Zawinski</A>
+<A HREF="https://www.jwz.org/about.html">&lt;jwz@jwz.org&gt;</A></I>
+</BODY>
+
+<!-- Mirrored from www.jwz.org/picturetile/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:22 GMT -->
+</HTML>

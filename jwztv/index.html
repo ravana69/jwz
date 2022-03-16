@@ -1,0 +1,372 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	  "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+<!-- Mirrored from www.jwz.org/jwztv/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:22 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<HEAD>
+ <meta name="geo.position" content="37.771007;-122.412694" />
+ <meta name="viewport" content="width=device-width" />
+ <link rel="shortcut icon" href="https://www.jwz.org/favicon.ico" type="image/x-icon" />
+ <link rel="stylesheet" type="text/css" href="https://www.jwz.org/jwz.css" />
+ <link rel="top"   href="https://www.jwz.org/" />
+ <link rel="alternate" type="application/rss+xml" title="Appcast" href="https://www.jwz.org/jwztv/updates.xml" />
+ <TITLE>jwztv</TITLE>
+<STYLE TYPE="text/css">
+<!--
+ .head { color: #FFF; background: #666; font-size: 200%; font-weight: bold;
+   padding: 0.25em; margin-bottom: 0.5em; clear: both; }
+ .head tt { font-size: 14pt; }
+ .y { font-size: smaller; }
+ ul { padding-left: 1.4em; }
+ li { margin: 0.5em 0; }
+ h1 tt { font-size: 14pt; }
+ u { font-style: italic; white-space: nowrap; }
+ .indented { margin: 0.5em 0 0.5em 1.5em; }
+ .row { position: relative; min-height: 2em; margin: 0.5em 0; clear: right; }
+ .cmdL { position: absolute; width: 11em; padding-left: 2em; }
+ .cmdR { margin-left: 12em; }
+ .desc { margin-left: 3em; }
+ .cmds2 { margin: 0.5em 0; }
+ .cmds2 .row { min-height: 1.1em; margin: 0; }
+ .cmds2 .cmdL { width: 13em; padding-top: 2px; }
+ .cmds2 .cmdR { margin-left: 15.5em; }
+-->
+</STYLE>
+ <SCRIPT ASYNC type="text/javascript" SRC="https://www.jwz.org/jwz.js"></SCRIPT>
+</HEAD>
+<BODY CLASS="jwzw">
+
+<DIV CLASS="head"><TT>jwztv</TT></DIV>
+<DIV CLASS="indented">
+
+<P> We play music videos all day long at
+<A HREF="http://www.dnapizza.com/">DNA Pizza</A>,
+the restaurant attached to my nightclub,
+<A HREF="https://www.dnalounge.com/">DNA Lounge</A>.
+This software is how we do that.
+
+<P> There are two things here: a macOS application for playing videos;
+and a web-based application that controls it, and allows anonymous users
+to request songs.
+
+</DIV>
+<DIV CLASS="head"><TT>but why?</TT></DIV>
+<DIV CLASS="indented">
+
+
+<P> I used to do this using iTunes.  It worked pretty well for several
+years.  But the reason I wrote this is that iTunes just gets worse and
+worse as time goes by.
+
+<P> Through iTunes 10.7, you could configure iTunes to allow anonymous
+users to request songs, without making them "pair" to your computer by
+giving them your iCloud password. It was a really great feature!
+Anyone who had the "Apple Remote" app installed on their iPhone could
+see the available tracks and vote on them.  We used this great feature
+24/7 in the restaurants.  But in 2012 they 
+<A HREF="https://www.jwz.org/blog/2012/12/is-there-a-long-german-word-for/">
+killed that feature</A>, when "iTunes DJ" was replaced with the far
+inferior "Up Next".
+
+<P> As it happens, Apple then went five years without touching the
+"Remote" app ("if it ain't broke, don't fix it"), so the request feature
+still worked, so long as you never upgraded beyond iTunes 10.7.  Which
+is exactly what I did.
+
+<P> Sadly, in 2017, they finally 
+<A HREF="https://www.jwz.org/blog/2017/03/the-itunes-race-to-the-bottom-continues-2/">
+removed that feature</A> from the Apple Remote iOS app.  And, iOS being
+the despicable locked-in walled garden that it is, they don't provide
+any way for you to downgrade to a previous version of the Remote app
+once you've accidentally upgraded.
+
+<P> So I wrote this pair of applications to work around Apple's habit
+of deleting perfectly good features with no replacement.
+
+<P> Dear iTunes team: you are bad at your job and you should feel bad.
+
+
+</DIV>
+<DIV CLASS="head"><TT>jwztv.app</TT></DIV>
+<DIV CLASS="indented">
+
+<P>
+<IMG SRC="https://www.jwz.org/jwztv/jwztv1.png" STYLE="width: 40%; height: auto; border: 0;
+  max-width: 640px; max-height: 314px; margin: 0 0.5em 1em 1em; float: right;
+  box-shadow: 4px 4px 8px #444;">
+
+<P> This is simple and reliable video player for macOS, since iTunes
+is no longer simple or reliable.  It plays videos one after another,
+doing configurable video cross-fades at the transition.  It displays
+the artist and title at the bottom of the window shortly after the
+track starts, and shortly before it ends, music video style.
+
+<P> It has very little in the way of interactive UI.  If you want an
+interactive video player, there are many featureful ones.  There's
+iTunes, of course, and I also quite like
+<A HREF="https://itunes.apple.com/us/app/movist/id461788075">Movist</A>.
+
+<P> The mission of this program is to be easily scriptable, and to be
+reliable when run <I>unattended.</I>  Most other movie players are not
+so great at that.
+
+<P> <IMG SRC="https://www.jwz.org/jwztv/jwztv5.png" STYLE="width: 50%; height: auto; border: 0;
+  max-width: 640px; max-height: 314px; margin: 0 0.5em 1em 1em; float: right;
+  box-shadow: 4px 4px 8px #444;">
+
+<P> Features of jwztv include:
+
+<P>
+<UL>
+ <LI> Displaying the track artist and title in a banner at the bottom of
+  the screen, shortly after the track starts, and shortly before the
+  track ends.  (If you have used <A HREF="https://www.jwz.org/jwzlyrics/">jwzlyrics</A>,
+  this may seem familiar to you.)
+
+ </LI><LI> It understands all relevant ID3 tags, and just
+ parses the file name if those are missing.
+
+ </LI><LI> Transitions between tracks are cross-faded, both audio
+  and video.
+
+ </LI><LI> It can automatically put itself back into full-screen mode,
+  in case some other app has pulled us back to the desktop. (This kind
+  of crap happens more often than one might like, in an unattended
+  context.)
+
+ </LI><LI> When no track is queued, it plays a video of static
+  (like the sky above the port) instead of simply black.
+
+</LI></UL>
+
+<P> It accepts several AppleScript commands, for automation purposes:
+
+<DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>play "</TT><U>file.mp4</U><TT>"</TT></DIV>
+ <DIV CLASS="cmdR">Add a file to the queue.</DIV>
+</DIV>
+<DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>play "</TT><U>file.mp4</U><TT>" <BR>volume -22</TT></DIV>
+ <DIV CLASS="cmdR">Add a file to the queue, and specify a
+  volume adustment (-100% to +100%).</DIV>
+</DIV>
+ <DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>play "</TT><U>file.mp4</U><TT>" request true</TT></DIV>
+<DIV CLASS="cmdR">Add a file to the front of the queue, but after the
+  other requests.</DIV>
+</DIV>
+ <DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>play "</TT><U>folder</U><TT>" <BR>shuffle true</TT></DIV>
+<DIV CLASS="cmdR"> Add all the files, and shuffle them.</DIV>
+</DIV>
+ <DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>delete "</TT><U>file.mp4</U><TT>"</TT></DIV>
+<DIV CLASS="cmdR"> Remove a file from the queue; if it was already
+  playing, skip it.</DIV>
+</DIV>
+ <DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>skip</TT></DIV>
+<DIV CLASS="cmdR">Move to the next track now.<BR></DIV>
+ </DIV>
+<DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>pause</TT></DIV>
+<DIV CLASS="cmdR">Pause current track.<BR></DIV>
+</DIV>
+<DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>play</TT></DIV>
+ <DIV CLASS="cmdR">Un-pause current track.<BR></DIV>
+</DIV>
+<DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>playing</TT></DIV>
+ <DIV CLASS="cmdR">What track is playing right now?<BR></DIV>
+</DIV>
+<DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>queued</TT></DIV>
+ <DIV CLASS="cmdR"> What tracks are coming up next?<P></DIV>
+</DIV>
+<DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>volume 0.75</TT></DIV>
+ <DIV CLASS="cmdR"> Set the global playback volume, 0 - 1.0.<P></DIV>
+</DIV>
+<DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>notify "</TT><U>text</U><TT>"</TT></DIV>
+ <DIV CLASS="cmdR"> Display text at the bottom of the screen for
+  a few seconds.
+</DIV>
+<DIV CLASS="row">
+ <DIV CLASS="cmdL"><TT>alert "</TT><U>text</U><TT>" <BR>for 15</TT></DIV>
+ <DIV CLASS="cmdR">Display text centered on the screen, and
+  specify a duration in seconds.</DIV>
+</DIV>
+</DIV>
+
+<P> You can also drop files or folders onto it, and <I>File / Open</I>
+has a "Shuffle" checkbox. But like I said above, interactive UI is
+sparse.
+
+<P>
+
+</DIV>
+<DIV CLASS="head"><TT>jwztv.cgi</TT></DIV>
+<DIV CLASS="indented">
+
+<IMG SRC="https://www.jwz.org/jwztv/jwztv3.png" STYLE="width: 33%; height: auto; border: 0;
+  max-width: 640px; max-height: 1136px; margin: 0 0.5em 1em 0.5em; float: right;
+  box-shadow: 4px 4px 8px #444;">
+<IMG SRC="https://www.jwz.org/jwztv/jwztv2.png" STYLE="width: 33%; height: auto; border: 0;
+  max-width: 640px; max-height: 1136px; margin: 0 0.5em 1em 1em; float: right;
+  box-shadow: 4px 4px 8px #444;">
+
+<P> This is a web application for controlling a remote video player.
+
+<P> (As it happens, that video player can be either jwztv.app or
+iTunes.  That's only because I made this transition in stages.)
+
+<P> How it works is this:
+
+<P> There are two machines involved.  The first is a Mac hooked up to
+a TV, which is playing videos.  The second is a server, on the public
+web, which controls it.  They need not be in the same building.  The
+client can be behind NAT or firewalls.  
+
+<P> The server has a MySQL database containing a listing of all of the
+available tracks (just the metadata, not the files themselves).  The
+client periodically tells the server what it has recently played, and
+polls the server for any new requests that have been submitted by
+users out in the world.  The server is also responsible for randomly
+(within reason) choosing what to play next.
+
+<P> The server is a CGI written in Perl, relying on a mysql back end.
+The CGI serves up a front end that is JavaScript with jQuery.
+
+<P> Users can request any tracks, but with certain constraints.
+These same constraints apply to randomly-chosen tracks:
+
+<P><UL>
+ <LI> A track can't be requested if it was recently played.
+
+ </LI><LI> A track can't be requested if more than <U>N</U> tracks by
+  that artist were recently played.
+
+ </LI><LI> A track can't be requested if the request queue is too long
+  (So that someone can't request hours of music and then leave).
+</LI></UL>
+
+<P> The web app is optimized for phone and tablet usage, as well as
+desktop-sized windows.
+
+<P> You can see it in action at
+<A HREF="https://www.dnalounge.com/musicvideos/">
+dnalounge.com/musicvideos/</A>, however, it won't let you do anything
+unless you are physically present at DNA Lounge: it only lets you
+view and manipulate the queue if you are connected via the local WiFi.
+
+<P> To install it:
+
+<P><UL>
+
+ <LI> Set up the web site structure, something like:
+
+<div style="overflow-x: auto;">
+ <DIV CLASS="cmds2">
+  <DIV CLASS="row">
+   <DIV CLASS="cmdL"><TT>/musicvideos/jwztv.css</TT></DIV>
+   <DIV CLASS="cmdR"></DIV>
+  </DIV>
+
+  <DIV CLASS="row">
+   <DIV CLASS="cmdL"><TT>/musicvideos/jwztv.js</TT></DIV>
+   <DIV CLASS="cmdR"></DIV>
+  </DIV>
+
+  <DIV CLASS="row">
+   <DIV CLASS="cmdL"><TT>/musicvideos/index.html</TT></DIV>
+   <DIV CLASS="cmdR">
+    &larr; copy from
+    <A HREF="https://www.dnalounge.com/musicvideos/">here</A>
+    and edit to taste</DIV>
+  </DIV>
+
+  <DIV CLASS="row">
+   <DIV CLASS="cmdL"><TT>/musicvideos/jwztv</TT></DIV>
+   <DIV CLASS="cmdR">&larr; this is actually <TT>jwztv.cgi</TT>, so:</DIV>
+  </DIV>
+
+  <DIV CLASS="row">
+   <DIV CLASS="cmdL"><TT>/musicvideos/.htaccess</TT></DIV>
+   <DIV CLASS="cmdR">
+        &larr; <TT><NOBR>&lt;Files "jwztv"&gt; \n </NOBR>
+         <NOBR>SetHandler cgi-script \n</NOBR>
+         <NOBR>&lt;/Files&gt;</NOBR></TT>
+    </DIV>
+  </DIV>
+ </DIV>
+</div>
+
+ </LI><LI> Create the MySQL tables as per the instructions at the top of
+ <TT>jwztv.cgi</TT>.
+
+ </LI><LI> Configure <TT>jwztv.cgi</TT> for your network:
+   Set <TT>%client_locations</TT>; and make <TT>db_open()</TT> work
+   with however you store your database credentials.
+
+ </LI><LI> Populate the server's tables by running:
+  <DIV CLASS="indented">
+   <TT>jwztv-client.pl --push-itunes "</TT><U>URL-of-jwztv.cgi</U><TT>"
+    "</TT><U>itunes-playlist</U><TT>"</TT></DIV>
+  to upload the metadata of an iTunes playlist to the server.
+  (Do this again any time the contents of the playlist change.)
+
+ </LI><LI> On the video-player machine, run this forever:
+  <DIV CLASS="indented">
+   <TT>jwztv-client.pl --loop <U>seconds</U> --poll-jwztv
+    "</TT><U>URL-of-jwztv.cgi</U><TT>"
+    "</TT><U>directory-with-MP4s</U><TT>"</TT></DIV>
+   where that directory might be, e.g.,
+   <U><TT>"~/Music/<WBR>iTunes/<WBR>iTunes&nbsp;Media/<WBR>Music/"</TT></U>.
+  Do something like <TT><NOBR>jwztv-startup.sh</NOBR></TT> from
+  <TT>cron</TT> once a minute.
+
+ </LI><LI> If you're looking for a way to get only a subset of your
+  collection from your home machine to the video playback machine
+  (for example, including only highly-rated videos, and excluding MP3s)
+  you might find 
+  <A HREF="https://www.jwz.org/hacks/#itunes-rsync"><NOBR>itunes-rsync.pl</NOBR></A>
+  to be useful:
+  <DIV CLASS="indented">
+   <TT>itunes-rsync.pl --files-only "<U>Playlist Name</U>"
+    <U>hostname</U>:</TT></DIV>
+
+</LI></UL>
+
+<P> Let me know if you are actually using any of this!
+
+</DIV>
+<DIV CLASS="head"><TT>download</TT></DIV>
+<DIV CLASS="indented">
+
+<DIV ALIGN=CENTER>
+ <TABLE BORDER=0 CELLPADDING=4 CELLSPACING=0>
+  <TR>
+   <TD VALIGN=TOP ALIGN=RIGHT><B>macOS App:</B></TD>
+   <TD VALIGN=TOP ALIGN=LEFT><A HREF="https://www.jwz.org/jwztv/jwztv-1.9.zip"><B>jwztv-1.9.zip</B></A></TD>
+   <TD VALIGN=TOP ALIGN=LEFT>(6 MB)</TD>
+  </TR>
+  <TR>
+   <TD VALIGN=TOP ALIGN=RIGHT><B>Source Code:</B></TD>
+   <TD VALIGN=TOP ALIGN=LEFT><A HREF="https://www.jwz.org/jwztv/jwztv-1.9.tar.gz"><B>jwztv-1.9.tar.gz</B></A></TD>
+   <TD VALIGN=TOP ALIGN=LEFT>(6 MB)</TD>
+  </TR>
+ </TABLE>
+</DIV>
+
+</DIV>
+<P CLEAR=BOTH>
+<HR>
+<I>&copy; 2017-2020 <A HREF="https://www.jwz.org/">Jamie Zawinski</A>
+<A HREF="https://www.jwz.org/about.html">&lt;jwz@jwz.org&gt;</A></I>
+</BODY>
+
+<!-- Mirrored from www.jwz.org/jwztv/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:22 GMT -->
+</HTML>

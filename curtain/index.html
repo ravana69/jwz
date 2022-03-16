@@ -1,0 +1,464 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	  "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+<!-- Mirrored from www.jwz.org/curtain/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:23 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<HEAD>
+ <meta name="geo.position" content="37.771007;-122.412694" />
+ <meta name="viewport" content="width=device-width" />
+ <link rel="shortcut icon" href="https://www.jwz.org/favicon.ico" type="image/x-icon" />
+ <link rel="stylesheet" type="text/css" href="https://www.jwz.org/jwz.css" />
+ <link rel="top"   href="https://www.jwz.org/" />
+ <TITLE>Arduino-Based Curtain Automation, Mk 2</TITLE>
+<STYLE TYPE="text/css">
+<!--
+ h1, h2 {
+   font-family: "Bitstream Vera Sans Mono", Menlo,
+                "Courier New", Courier, monospace;
+   color: #FFF; background: #666;
+   font-weight: bold;
+   padding: 0.5em 0 0.5em 1em;
+   margin: 0 0 1em 0;
+ }
+h1 { font-size: 16pt; }
+h2 { font-size: 12pt; margin-top: 1.5em; }
+
+body > p  { margin-left: 2em; }
+body > ol { margin-left: 0.7em; }
+
+.thumb { width: 30%; height: auto; border: 1px solid; }
+
+.thumb_right { width: 30%; float: right; margin: 0 0 1em 2em; }
+.thumb_right .thumb { width: 100%; margin: 0 0 0.25em 0; }
+
+.box { border: 1px solid; padding: 1em; width: 50%; margin: 1em auto;
+  font-size: 12pt; font-weight: bold;
+  text-align: center;
+  background: #DDD;
+}
+.box tt { font-size: 12pt; }
+
+.rcol { display: inline-block; width: 4em; text-align: right; }
+.rarr { display: inline-block; width: 1em; text-align: right;
+  padding: 0 0.5em;
+ }
+.rbox1 { border-top: 1px solid; padding-top: 0.5em; }
+.rbox1, .rbox2, .rbox3 { border-left: 1px solid; border-right: 1px solid;
+  padding-right: 1em; 
+ }
+.rbox3 { border-bottom: 1px solid; padding-bottom: 0.5em; }
+
+-->
+</STYLE>
+ <SCRIPT ASYNC type="text/javascript" SRC="https://www.jwz.org/jwz.js"></SCRIPT>
+</HEAD>
+<BODY CLASS="jwzw">
+
+<H1>Arduino-Based Curtain Automation, Mk 2</H1>
+
+
+<P> In 2012, I built a controller so that I can open and close my
+curtain from the command line!  It worked ok for a while, but 
+eventually I rebuilt it from scratch.  The description of the
+first build is <A HREF="https://www.jwz.org/curtain/2012.html"><B>here</B></A>, or read on for the
+description of Curtain Mk 2.
+
+<P> So.
+
+<P> My apartment has a 16' wide floor-to-ceiling window, and a
+correspondingly-huge curtain.  I wanted to put the curtain under
+software control so I could do things like, for example, have it
+automatically open in the morning to help me get out of bed.
+
+<P><H2> Things that didn't work. </H2>
+
+<P> My first approach was to buy an <A
+HREF="http://www.amazon.com/gp/product/B003YVJ472">Add-a-Motor Model
+80 Drapery and Blind Controller</A>, as a starting point.  It looked
+like this would do <I>most</I> of what I wanted: open and close the
+curtain by pulling on the rope.  All that was left was a small
+matter of hooking up ethernet to its toggle button, right?
+
+<P> Well, it wasn't that simple; I ended up having to discard all
+of its circuitry and re-use just its electric motor, gearbox and
+mounting hardware.  Downsides of this approach were:
+
+<OL>
+ <LI> The motor is <I><B>REALLY REALLY LOUD</B></I>.
+
+ <P> Since one of my goals for this project was to have my curtain
+ automatically open in the morning so that the daylight <I>subtly</I>
+ reminds me to get out of bed without an actual alarm going off, this
+ is a problem, since the noise of the thing would often wake me up.
+
+ <P> I somewhat mitigated that by putting the whole mess inside a
+ larger box and lining the inside of it with
+ <A HREF="https://web.archive.org/web/20120103065326/http://www.amazon.com:80/Ballistic-SSSK-Speaker-Kit/dp/B004J1WFX6">
+ Ballistic Sound Dampening sheets</A>, which is a
+ dense-rubber-and-aluminum sticky sheet designed for layering inside
+ your car door panel to prevent rattling when you have a ludicrously
+ deafening sound system.  It helped, but not enough.
+
+ </LI><LI> The gearbox is made of plastic gears, and is a piece of shit.
+
+ <P> Once I got the thing working, it worked for a couple of years,
+ but eventually it catastrophically self-destructed, stripping a
+ gear and cracking its own case while torquing itself off the wall.
+
+ <P> So I bought another one and replaced it, and that one stripped
+ a gear the very next day.  Since they're almost $100, I wasn't about
+ to keep buying a new one every couple of months.
+
+ </LI><LI> The mechanism is timer-based.
+
+ <P> That means that if for some reason, opening the curtain and
+ closing the curtain don't take the same amount of time -- e.g., when
+ the shitty plastic gears are slipping at random -- the curtain won't
+ close all the way.
+
+ </LI>
+</OL>
+
+<P> So, you know, I don't really recommend the Add-a-Motor.
+Unfortunately there doesn't seem to be any comparable product on the
+market that isn't an integrated curtain track that costs more than
+$4,000 -- and can only be remote controlled using mysterious,
+proprietary systems that mostly rely on IR.
+
+
+<P><H2> Starting over. </H2>
+
+<P> Still a-glow from the flawless victory of my recent
+<A HREF="https://www.dnalounge.com/backstage/src/phonebooth/index2.html">
+payphone conversion project</A> (making a note here: huge success)
+I decided to start over from scratch.  The new plan went a little
+something like this:
+
+<OL>
+ <LI> <A HREF="https://web.archive.org/web/20120102195352/http://www.adafruit.com:80/products/68">Arduino Uno</A>;
+ </LI><LI> <A HREF="https://web.archive.org/web/20160403041525/https://www.adafruit.com/products/2971">Ethernet Shield</A>;
+ </LI><LI> <A HREF="https://web.archive.org/web/20130715211716/http://www.adafruit.com:80/products/1438">Motor Shield</A>;
+ </LI><LI> <STRIKE>
+   <A HREF="https://web.archive.org/web/20120117121946/http://www.adafruit.com:80/products/324">Stepper motor</A></STRIKE>,
+   179oz-in -- nope, that wasn't strong enough;
+ </LI><LI> <A HREF="https://web.archive.org/web/20150905121031/https://www.pololu.com/product/3257">
+  227:1 Metal Gearmotor 25Dx56L mm LP 12V</A>
+  (23 RPM, 240oz-in, 1.1a stall);
+ </LI><LI> Two <A HREF="http://www.amazon.com/gp/product/B00ATNJH20">
+  Hall effect sensors</A> to determine when the curtain is at the
+  left end or right end of the rail.
+ </LI>
+</OL>
+
+<P> Hall effect sensors are those magnet detectors that you see on
+door alarms. They trigger when a strong magnet is nearby, and with a
+reasonably strong magnet, that means "within about an inch".
+(Pro tip: you need 2, so buy 10.  Don't be like me.)
+
+<P> The Adafruit Motor Shield and its software are really easy to use,
+and support a variety of motors.  First I tried a stepper motor, but
+it wasn't nearly strong enough; even when double-stepping it, I could
+still stop it with one finger.  So I got the above Pololu electric
+motor, with an internal metal gearbox, and it's... <I>almost</I>
+strong enough.  It can open the curtain just fine, but when closing
+it, it really struggles at the end (as the curtain gets bunched up
+and harder to compress) and sometimes it stalls out.
+
+<P> So I may switch to 
+<A HREF="https://web.archive.org/web/20150905063311/https://www.pololu.com/product/3258">this one</A> instead,
+which has more torque, but sadly, is only about half as fast
+(378:1, 14 RPM, 320oz-in, 1.1a stall).  With the current motor, it takes
+about 90 seconds to open the curtain.  With the slower/stronger one,
+that would be about two and a half minutes...
+
+<P> I haven't found another motor that is both higher speed and
+torque, and that has a stall current under 1.2a (which is what the
+Motor Shield requires).
+
+<P> Update: I took a chance on
+<A HREF="https://web.archive.org/web/20150905125839/https://www.pololu.com/product/3233">this one</A>,
+which has a too-high stall current
+(33 RPM, 210oz-in, 2.1a stall) and it was working great -- for about
+a month and a half until it stripped an internal gear.  Sigh.
+
+<P> Also: huge thanks to <A HREF="https://web.archive.org/web/20120112051721/http://adafruit.com/">Limor</A>
+for advice on what parts to use!  I wouldn't have even known where to
+begin shopping for motors or how to quantify my requirements
+otherwise.  <A HREF="https://web.archive.org/web/20120112051721/http://adafruit.com/">Adafruit</A> is an
+awesome company and you should buy all your stuff there.
+
+
+<P><H2> The hardware. </H2>
+
+<DIV CLASS="thumb_right">
+ <A HREF="https://www.jwz.org/curtain/100.html"><IMG SRC="https://www.jwz.org/curtain/100-thumb.jpg" CLASS="thumb" STYLE="max-width:270; max-height:360px;"></A>
+ <A HREF="https://www.jwz.org/curtain/101.html"><IMG SRC="https://www.jwz.org/curtain/101-thumb.jpg" CLASS="thumb" STYLE="max-width:360; max-height:270px;"></A>
+ <A HREF="https://www.jwz.org/curtain/102.html"><IMG SRC="https://www.jwz.org/curtain/102-thumb.jpg" CLASS="thumb" STYLE="max-width:360; max-height:270px;"></A>
+</DIV>
+
+<P> I used an Arduino proto board to keep all of my connectors 
+removable and in the same place: I attached an 8-pin header to
+it and routed everything through it.  I also added a pair of
+LEDs to it to make it easier to debug the positioning of sensors:
+I needed to be able to see whether the sensor was triggering from
+across the room, while I was standing on a ladder...
+
+<P> So my Arduino pin usage looks like:
+
+<OL START=2>
+ <LI> LED 1;
+ </LI><LI> LED 2;
+ </LI><LI> <I>Unused: Ethernet Shield usurps it</I>;
+ </LI><LI> Sensor 1;
+ </LI><LI> Sensor 2;
+ </LI><LI> Push button.
+</LI></OL>
+
+<P> <P> The LEDs are wired directly, so that leaves three sets of cables
+that go into the header:
+
+<OL START=1>
+ <LI> Push-button A;
+ </LI><LI> Push-button B;<P>
+ </LI><LI> Motor A;
+ </LI><LI> Motor B;<P>
+ </LI><LI> Sensor power;
+ </LI><LI> Sensor ground;
+ </LI><LI> Sensor 1 detect;
+ </LI><LI> Sensor 2 detect.
+</LI></OL>
+
+<P> The Hall effect sensors have three pins, but they can share power
+and ground, so two sensors means four wires.  I just ran Cat5 behind
+the curtain track, with a fork for the first sensor.
+
+<P> To mount them, I cut up small pieces of proto-board, soldered
+on the sensors and the wires, and then glopped a generous serving
+of epoxy over it all, since I knew I was going to be twisting and
+fussing with them a lot while mounting them, and I didn't want any
+chance of one of the wires breaking off.  
+
+<P> right now they're stuck to the ceiling with foam-tape, but
+eventually I'll epoxy them in place, once I'm certain the positioning
+is correct.
+
+<P> One difficulty was actually finding a place to put them that
+didn't interfere with the motion of the curtain.  Even though the
+curtain hangs below the track on hooks, the fabric of the curtain
+actually extends above the track, so zip-tying the cable to the
+track's bolts was making it get caught up.  I ended up having to
+drill new holes in the ceiling just to mount the cable.  Nothing
+says good times like standing on a ladder and drilling into 
+concrete above your head...
+
+<P>
+<DIV CLASS="thumb_right">
+ <A HREF="https://www.jwz.org/curtain/103.html"><IMG SRC="https://www.jwz.org/curtain/103-thumb.jpg" CLASS="thumb" STYLE="max-width:270; max-height:360px;"></A>
+</DIV>
+
+<P> Turning the wheel and pulling on the cord was another difficulty...
+
+<P> The old Add-a-Motor had a track that the box slid on to, and a
+set-pin to hold it in place, so you could adjust the tension on the
+cord.  That was a reasonable system, so I decided to re-use that by
+bolting my new motor contraption into the old box.  My first attempt
+at that, of just screwing the new motor housing to the old plastic
+box, brought us back to the same old problem: everything about the
+Add-a-Motor is a plastic piece of shit.  So of course it flexed too
+much and didn't work right.
+
+<P> I then stripped away most of the plastic box and screwed some
+small steel plates to it to stiffen it, then mounted the motor to
+that.  That'll hold it...
+
+<P> I also re-used the rubber gripper-wheel from the Add-a-Motor,
+after sandwiching it between two new wheels, because why not.
+
+<P> See that pipe strap holding the motor to the bracket?  Yeah, that
+was a bad idea.  Don't do that.  On my first attempt at this, I
+tightened down that strap too much, and one of the screw-heads <I>very
+slightly</I> dented the motor casing.  You know what happens to
+electric motors that have dents in them?  They no longer turn.  So
+don't do that.
+
+
+
+<P><H2> The software. </H2>
+
+<P><DIV STYLE="float: right; width: 55%; margin: 0 0 1em 2em;">
+<DIV CLASS="video_floater"><DIV CLASS="video_frame"><IFRAME CLASS="video_embed"
+ SRC="https://www.youtube.com/embed/SvWTwiyPp-U?version=3&amp;theme=dark&amp;modestbranding=1&amp;fs=1&amp;rel=0&amp;showsearch=0&amp;showinfo=0&amp;iv_load_policy=3" TITLE="Arduino-Based Curtain Automation, Mk 2" ALLOWFULLSCREEN></IFRAME></DIV></DIV>
+</DIV>
+
+<P> It's only a minor update of the software I wrote 
+<A HREF="https://www.jwz.org/curtain/2012.html">last time</A>, updated to understand the two
+sensors (giving it three possible states: open, closed and middle,
+rather than the two states it had last time.)  Also some LED-blinking
+niceties to represent the various states and error conditions.
+
+<P> It listens for connections on an Ethernet port, and reacts
+to commands like <B>OPEN</B>, <B>CLOSE</B> and <B>TOGGLE</B>
+by turning the motor on and off until it sees the status of the
+sensors change.  And as a safety feature, if the motor has been
+running for more than a couple of minutes without a sensor being
+triggered, it panics and stops the motor anyway.
+
+<P> There is also a push-button on the side of the device that does
+the same thing as the <B>TOGGLE</B> command, for those times when I
+want to open or close the curtain without using the computer to do
+it.
+
+<P> The code is pretty straightforward, but if you're writing your own
+command-line-driven server for an Arduino Ethernet, this might be a
+good starting point.
+
+<P>
+<DIV CLASS="box">
+ Arduino source:
+<A HREF="https://www.jwz.org/curtain/curtain.ino"><TT>curtain.ino</TT></A>
+</DIV>
+
+<P> And here's a Perl script for talking to that server from the
+command-line, so you can type things like "<TT><B>curtain&nbsp;open</B></TT>":
+
+<P>
+<DIV CLASS="box">
+Cmdline interface:
+<A HREF="https://www.jwz.org/curtain/curtain"><TT>curtain.pl</TT></A>
+</DIV>
+
+
+<P><H2> An aside about the Arduino Ethernet library and how it sucks. </H2>
+
+<P> Can I just take a moment to say again how <I>completely absurd</I>
+the Arduino DHCP situation is?  Let me enumerate its sins:
+
+<P>
+<OL>
+
+ <LI> You have to <I>hardcode your MAC address into your source!</I>
+ <B><I>SERIOUSLY?</I></B>  If I had multiple devices and I wanted
+ them to function simultaneously, I would have to edit the source code
+ for each one of them before deploying?  (And don't tell me it would
+ break the bank to include 48 <I>bits</I> of NVRAM on the Ethernet
+ board -- I'll pay the extra $0.001.)
+
+ <P> I mean, how does anything work at all?  Honestly, even talking
+ about this is <I>embarrassing.</I> I feel <I>bad</I> for the people
+ who allowed this situation to exist. I feel like even discussing this
+ is like pointing out someone's big honking booger, like, is this
+ really necessary, and can we just <I>not?</I>
+
+ </LI><LI><P> If the Ethernet shield is not plugged in, the software
+ does not detect that, and <TT>Ethernet.begin()</TT> simply <I>hangs
+ forever</I> and your device will not boot.  So have fun debugging
+ the software in an ethernet-less test environment.
+
+ </LI><LI><P> If the Ethernet <I>cable</I> is not plugged in,
+ <TT>Ethernet.begin()</TT> stalls for <I>two minutes</I> waiting for a
+ response. Because apparently link-detect is too hard.  And not only
+ is that timeout unreasonably long, but there is no way to adjust it.
+
+ </LI><LI><P> Should your device boot up with no DHCP lease... forget
+ about it, you can't get one later either, unless you're willing to
+ periodically risk that two minute timeout.
+
+ </LI><LI><P> It will never renew your lease, ever.  So if your router
+ decides to give your IP to someone else, because you've never renewed
+ it... well, I guess you get to walk over there and power-cycle your
+ device.
+
+ </LI><LI><P> If you google around for a minute, you'll find some
+ references to an "EthernetDHCP" library that purports to fix many of
+ these problems -- Asynchronous operation! Configurable timeouts! 
+ Actually <I>renewing leases!</I> This is like some Star Trek science
+ fictional future crazy-talk here! -- but...
+
+ <P> ...wait for it...
+
+ <P> ...that software is from like <I>2013</I>, which was <I>three
+ years ago</I>, so of course it no longer compiles, its features
+ were never re-integrated back into the standard Ethernet library,
+ and it now appears to be abandonware.
+
+ </LI><LI> Oh yeah, and though it's not particularly Ethernet related,
+ wow, the Mac Arduino.app really is a piece of shit.  I mean, it's
+ written in Java, so complaining about how relentlessly terrible it is
+ really feels like kicking a puppy. A puppy with no hind legs.  But
+ wow is it bad.
+
+ <P> It has innumerable failings, but it's greatest sin is not
+ bothering to notice when the file loaded into it has changed on disk
+ (because, say, you're using an external editor) and automatically
+ re-reading it, like <I>every other IDE in the world does.</I> This is
+ related to its second-greatest sin, which is that it <I>does not use
+ standard Mac text-areas</I>, which means that the built-in editor
+ does not implement Emacs keybindings, so editing code within the
+ Arduino app is like dictating your code over the telephone.
+
+ <P> But I digress.
+
+</LI></OL>
+
+<P>
+
+<P><H2> Would you like to come up and see my automata? </H2>
+
+<P> At this point there's a fair amount of home-brewed automation in
+my apartment.  My receiver (a Denon X2000) has ethernet, so I wrote a
+<A HREF="https://www.jwz.org/hacks/tuner">Perl script</A> to speak the
+<A HREF="https://web.archive.org/web/20130831050740/http://usa.denon.com/US/Downloads/Pages/InstructionManual.aspx?FileName=DocumentMaster/US/AVR-3808CISerialProtocol_Ver5.2.0a.pdf">
+AVR/AVC control protocol</a>.  This means I can change the
+volume and input sources from the computer without getting out of
+my chair: sweet!  (Some people might have used an IR remote control
+for this. How pedestrian.)
+
+<P> My current video projector (an 
+<A HREF="http://www.amazon.com/gp/product/B00GGGQHHC/"> Optoma
+X600</A>) does not do anything sensibly straightforward like just have
+a web server in it for remote control, but there <I>is</I> a
+<TT>Net::PJLink</TT> Perl library that knows how to talk to it, so I
+can power it on and off from the web.  Sweet.
+
+<P> So, combine the two of these with a properly-configured
+<A HREF="https://web.archive.org/web/20120103151030/http://store.griffintechnology.com:80/desktop/powermate">
+Griffin PowerMate</A>, and I've got a big button sitting on my
+desk that adjusts the volume when I turn it, and toggles the
+projector on and off when I smack it.  Turning the projector
+on also pauses iTunes and switches to the proper input on the
+tuner; and turning it off does the reverse.
+(Important: use the the PowerMate 2.1 software.  The 3.0
+software totally shit the bed.)
+
+<P> This is especially handy for those times when I fall asleep
+watching TV, because when I wake up and stumble toward the bedroom,
+I can hit the big button to turn off the projector without having
+to wake up enough to focus my eyes on a remote!
+
+<P> Turning on the projector also closes the curtain -- and, I have a
+cron job that opens the curtain in the morning to remind me that
+daylight exists.
+
+<DIV ALIGN=CENTER>
+<HR>
+<A HREF="https://www.jwz.org/blog/2016/02/i-have-altered-my-curtain-automation-pray-i-do-not-alter-it-further/">Comments</A>
+<HR>
+
+<I>&copy; 2012-2016 <A HREF="https://www.jwz.org/">Jamie Zawinski</A>
+<A HREF="https://www.jwz.org/about.html">&lt;jwz@jwz.org&gt;</A></I>
+<P>
+</DIV>
+<!--
+  rm ???.html
+  gallery.pl 0??.jpg --noindex
+  gallery.pl 1??.jpg --noindex
+  perl -pi -e 's@( Automation)(</A)@$1, Mk 2$2@g' ???.html
+  perl -pi -e 's/Mk 2/Mk 1/g' 0??.html
+  perl -pi -e 's@"./"@"2012.html"@g' 0??.html
+  rm thumb.jpg
+-->
+</BODY>
+
+<!-- Mirrored from www.jwz.org/curtain/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:23 GMT -->
+</HTML>

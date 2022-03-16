@@ -1,0 +1,603 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+	  "http://www.w3.org/TR/html4/loose.dtd">
+<HTML>
+
+<!-- Mirrored from www.jwz.org/gronk/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:22 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<HEAD>
+ <meta name="geo.position" content="37.771007;-122.412694" />
+ <meta name="viewport" content="width=device-width" />
+ <link rel="shortcut icon" href="https://www.jwz.org/favicon.ico" type="image/x-icon" />
+ <link rel="stylesheet" type="text/css" href="https://www.jwz.org/jwz.css" />
+ <link rel="top"   href="https://www.jwz.org/" />
+ <TITLE>Gronk!</TITLE>
+ <SCRIPT ASYNC type="text/javascript" SRC="https://www.jwz.org/jwz.js"></SCRIPT>
+</HEAD>
+<BODY>
+
+<P ALIGN=CENTER>
+<H1 ALIGN=CENTER>Gronk!<FONT SIZE=4><BR>
+An MP3 Jukebox for Unix<BR>
+by <A HREF="https://www.jwz.org/about.html">Jamie Zawinski</A>
+</FONT></H1>
+
+<P><BR>
+<DIV ALIGN=CENTER>
+ <TABLE CELLPADDING=2 CELLSPACING=0 BORDER=0>
+  <TR>
+   <TD BGCOLOR="#00FF00">
+    <TABLE CELLPADDING=0 CELLSPACING=0 BORDER=0 WIDTH="100%">
+     <TR>
+      <TD BGCOLOR="#000000" ALIGN=CENTER NOWRAP>
+       <TABLE CELLPADDING=0 CELLSPACING=18 BORDER=0 WIDTH="100%">
+        <TR>
+         <TD><A HREF="#features">Features</A></TD>
+         <TD><A HREF="#requirements">Requirements</A></TD>
+         <TD><A HREF="#changelog">Changelog</A></TD>
+         <TD><A HREF="#download">Download</A></TD>
+         <TD><A HREF="#demo">Demo</A></TD>
+        </TR>
+       </TABLE>
+      </TD>
+     </TR>
+    </TABLE>
+   </TD>
+  </TR>
+ </TABLE>
+</DIV>
+
+<P><BR>
+
+<P> In late 1999, I converted all of my compact discs to MP3s files, and
+<B>Gronk</B> is the quick-<WBR>and-<WBR>dirty software package I threw
+together to maintain my collection and control the playlist.
+
+<P>
+<DIV ALIGN=CENTER>
+<BR>
+ <TABLE CELLPADDING=1 CELLSPACING=0 BORDER=0 WIDTH="90%">
+  <TR>
+   <TD BGCOLOR="#00FF00">
+    <TABLE CELLPADDING=12 CELLSPACING=0 BORDER=0 WIDTH="100%">
+     <TR>
+      <TD BGCOLOR="#440000">
+
+<B>This software is no longer maintained.</B> In 2005, I finally
+<A HREF="https://www.jwz.org/blog/tag/switch">abandoned</A>
+Linux for MacOS and never looked back.  Now I just use
+<A HREF="https://web.archive.org/web/20010124075100/http://www.apple.com:80/itunes/download/">iTunes</A>
+to manage my music collection.  I wholeheatedly recommend that
+you do the same.
+
+      </TD>
+     </TR>
+    </TABLE>
+   </TD>
+  </TR>
+ </TABLE>
+</DIV>
+
+
+<P><BR> At the time, I looked around at other Linux jukebox programs, and none of
+them really did exactly what I wanted.  Either they had user interfaces that I
+didn't like, or they were far too complicated to install.  Among other
+things, they all seem to rely heavily on MySQL.  Sorry, but the fact is
+that when you're only dealing with ten or twenty thousand items, a
+database is overkill.  Especially since these items change infrequently
+(how many CDs do you buy a week?)  So Gronk is built almost entirely
+around static HTML pages: it goes through the MP3 files and the CDDB
+data, and constructs HTML representing all of the discs.  When you add
+a new set of CDs, regenerate the pages.  Even with my huge collection
+this only takes a few minutes.
+
+<H2><A NAME="features">Features:</A></H2>
+
+<P><UL>
+ <LI> Web-based user interface;
+ </LI><LI> Hierarchical display of bands, albums, and tracks,
+   including album cover artwork (if present);
+ </LI><LI> Easy to select a particular track or an entire album for playback;
+ </LI><LI> When you haven't explicitly selected songs for playback, they
+   are chosen randomly from amongst your entire collection;
+ </LI><LI> Easy to tell it ``never play this song again'';
+ </LI><LI> Can use any command-line program for playback;
+ </LI><LI> Can also use <A HREF="https://web.archive.org/web/20000301101913/http://xmms.org:80/"><B>XMMS</B></A>
+   for playback;
+ </LI><LI> If you use <A HREF="https://web.archive.org/web/20000301101913/http://xmms.org:80/"><B>XMMS</B></A>,
+   then you get <A HREF="https://web.archive.org/web/20000520002846/http://www.icecast.org:80/"><B>Icecast</B></A>
+   broadcasts for free, via the
+<!--
+   <A HREF="https://web.archive.org/web/20000302095127/http://star.arm.ac.uk:80/~spm/software/liveice.html">
+   <B>LiveICE</B></A> 
+ -->
+   <A HREF="https://web.archive.org/web/20030602190301/http://www.oddsock.org:80/tools/oddcastv2_xmms/">
+   <B>Oddcast DSP</B></A> 
+   plugin;
+ </LI><LI> Navigation hyperlinks on everything;
+ </LI><LI> Automatically cross-references bands with compilation albums on
+   which they appear;
+ </LI><LI> Gets album and song names from
+   <A HREF="https://web.archive.org/web/20000304141002/http://freedb.org:80/">FreeDB/CDDB</A> instead of from the
+   MP3 files themselves, bypassing the 30-character limit of ID3v1
+   (since at the time that I wrote this, ID3v2 was still almost entirely
+   unsupported);
+ </LI><LI> Doesn't use SQL.
+</LI></UL>
+
+
+<H2><A NAME="wishlist">Wish List:</A></H2>
+
+<strike>
+<P><UL>
+
+ <LI> The web UI should show the time remaining, and have a scrollbar
+  for zipping around in the song, and for showing progress.
+
+ </LI><LI> The UI for ``never play this song'' needs work.
+
+ </LI><LI> Scoring would be interesting: instead of just excluding
+  songs, being able to tell it to play certain songs more often.
+
+ </LI><LI> Right now there is no mechanism for playing random other
+  MP3 files, only ones that are already ``in the system.''
+
+ </LI><LI> I think the presentation of the compilation albums (the
+ ``Various'' pseudo-band) is kind of unwieldy.  There are just
+ too many entries in that list.
+
+ </LI><LI> I need better icons: the ``play'' icons are too reminiscent of
+ outliner-expander triangles, so some people have thought that clicking
+ on the triangle meant ``show me the tracks on this album'' rather than
+ ``play this album.''
+
+ </LI><LI> More direct support for
+ <A HREF="https://web.archive.org/web/20000520002846/http://www.icecast.org:80/"><B>Icecast</B></A>.
+ The
+<!--
+  <A HREF="https://web.archive.org/web/20000302095127/http://star.arm.ac.uk:80/~spm/software/liveice.html">
+  <B>LiveICE</B></A>
+ -->
+  <A HREF="https://web.archive.org/web/20030602190301/http://www.oddsock.org:80/tools/oddcastv2_xmms/">
+  <B>Oddcast DSP</B></A> 
+   <A HREF="https://web.archive.org/web/20000301101913/http://xmms.org:80/"><B>XMMS</B></A> plugin works pretty
+   well, but it would be nice to do webcasting without having xmms (or
+   even X) running at all.
+
+</LI>
+</UL>
+</strike>
+
+<UL><I STYLE="font-size:smaller"> (Yeah, just use iTunes already...) </I></UL>
+
+
+<H2><A NAME="requirements">Requirements:</A></H2>
+
+<P><UL>
+
+ <LI> Perl 5.
+
+ <P></LI><LI> A whole lot of MP3 files, and their corresponding 
+  <A HREF="#cddb">CDDB</A> files.
+
+ <P></LI><LI> A web browser that supports HTML circa 1995.
+  (Tables and colors, but no JavaScript, no layers, no plugins.)
+
+ <P></LI><LI> A web server (anything that supports
+  <A HREF="https://web.archive.org/web/20000229120240/http://www.apache.org:80/">Apache</A>-style
+  ``<TT>.htaccess</TT>'' files and CGI scripts.)
+
+ <P></LI><LI> <A HREF="https://web.archive.org/web/20010506223651/http://ibiblio.org:80/mp3info/"><B>mp3info</B></A> or
+         <A HREF="ftp://bimbo.hive.no/pub/mp3info/"><B>mp3info</B></A>.
+
+ <P></LI><LI> <A HREF="https://web.archive.org/web/20000301101913/http://xmms.org:80/"><B>XMMS</B></A>,
+  <B>mpg123</B>, or <A HREF="https://web.archive.org/web/20011116090328/http://mpg321.sourceforge.net:80/"><B>mpg321</B></A>
+  for playback.  I found that playback would skip with mpg123 (e.g.,
+  while I am ripping CDs) but that XMMS doesn't skip, so that's what I
+  use.  Also, with XMMS you get a scrollbar and a playback timer, which
+  the web page doesn't include.
+
+ <P></LI><LI> If you are using XMMS, you'll also need
+  Doug MacEachern's Perl XMMS interface 
+  <NOBR>(<TT>perl -MCPAN -e 'install Bundle::Xmms'</TT>)</NOBR> which
+  will in turn require the xmms and xmms-devel packages (from
+  <A HREF="https://web.archive.org/web/20000301101913/http://xmms.org:80/">xmms.org</A>.)
+
+</LI></UL>
+
+
+<H2><A NAME="setup">My Setup:</A></H2>
+
+<P><UL>
+
+ <LI> I had a dedicated machine to serve as my jukebox.
+  It was a Pentium III running Linux, with lots and lots of disk space.
+
+ <P></LI><LI> I never sat in front of that machine, but it did have a monitor.
+  It was running a browser showing the Gronk web page, from which I could
+  walk over and adjust the playlist.  
+
+
+ <P></LI><LI> It also ran <A HREF="https://www.jwz.org/xscreensaver/"><B>XScreenSaver</B></A>
+  (of course!) and one of the utilities included with the Gronk package
+  is a program that will periodically pop up a window showing the name
+  of the currently-playing song in multi-inch-high letters, so that one
+  can read it from across the room.  This only pops up while the 
+  screen saver is on.
+
+ <P></LI><LI> And most importantly, since it is a stereo component, I
+  spraypainted it black.
+
+ <P></LI><LI> I ripped my CDs using
+  <A HREF="https://web.archive.org/web/20000816002154/http://www.nostatic.org:80/grip/"><B>Grip</B></A>,
+  <A HREF="https://web.archive.org/web/19991006105044/http://www.xiph.org:80/paranoia/"><B>CD Paranoia</B></A>, and
+  <A HREF="https://web.archive.org/web/20001110133800/http://www.mp3dev.org:80/mp3/"><B>LAME</B></A>.
+  But you can use whatever you like, so long as you follow the same
+  file naming convention, and have the CDDB files available
+  (see <A HREF="#cddb">below</A>.)
+
+  <P></LI><LI> I generally just listen to everything on random shuffle.
+   That plus the "Never Play This Song Again" button works out pretty
+   nicely...
+
+</LI></UL>
+
+
+<H2><A NAME="tips">Rip Tips:</A></H2>
+
+<P><UL>
+
+<P> Gronk is picky about the naming conventions used by the MP3 files.
+Basically, there should be a directory for each band; and within those,
+a directory for each album; and within those, an MP3 file for each
+song.  The MP3 files should be named
+``<B><I>nn</I>-<I>song</I>.mp3</B>'' where <TT><B><I>nn</I></B></TT> is
+the track number.  The song name (and the names of the band/album
+directories) should be lower case, with spaces converted to
+underscores, and all non-alphanumeric chars deleted.
+
+<P> If you use <A HREF="https://web.archive.org/web/20000816002154/http://www.nostatic.org:80/grip/"><B>Grip</B></A>
+to rip your CDs, use these settings in its preferences:
+
+<P><UL>
+<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0>
+<TR><TD NOWRAP>Rip File Format: </TD><TD><TT>~/mp3/%A/%d/%t-%n.wav</TT></TD>
+</TR>
+<TR><TD NOWRAP>MP3 File Format: </TD><TD><TT>~/mp3/%A/%d/%t-%n.mp3</TT></TD>
+</TR></TABLE>
+</UL>
+
+<P> <B><I>WARNING!</I></B> Make sure you use <B>%A</B> and not
+<B>%a</B>, or Grip will do horrible things with compilation albums.
+
+</UL>
+
+<H2><A NAME="cddb">CDDB Files:</A></H2>
+
+<UL>
+
+<P> Gronk is very much ``disc'' based: it is organized with the
+assumption that you have a large collection of complete CDs ripped,
+not a scattered collection of single-track MP3 files.  It expects
+a directory per CD, containing all/only the tracks from that CD.
+
+<P> Gronk needs access to the CDDB files that correspond to the ripped
+CDs.  It doesn't care about ID3 tags at all.  This is because ID3
+imposes 30-character limits on field lengths, whereas the FreeDB/CDDB
+data can be arbitrarily long, contains more information, is
+centralized, and is generally more accurate.  If you have ripped the
+CDs yourself (or even if you have ever played them on your computer)
+then the CDDB files will be sitting in your <TT>~/.cddb/</TT>
+directory.
+
+<P> If you did not rip the CDs yourselves, you can probably find
+the CDDB files by searching on <A HREF="https://web.archive.org/web/20000304141002/http://freedb.org:80/">
+<B>freedb.org</B></A>.  Or, you can try and generate a ``close enough''
+CDDB file from the MP3 files you have using the included
+<TT>make-cddb.pl</TT> script (see the <TT>README</TT> for details.)
+
+</UL>
+
+
+<A NAME="changelog"><H2>Changelog:</H2></A>
+
+<UL>
+
+<H2> New in 1.9:</H2>
+
+<P><UL>
+
+  <LI> ID3 tags are written with "id3tag" instead of "mp3info",
+  which means that both ID3v1 and ID3v2 tags will be used now.
+
+  </LI><LI> make-cddb.pl understands ID3v2, meaning it will do
+  a better job of importing MP3s ripped with iTunes.
+
+  </LI><LI> mp3ify.sh will convert .m4a to .mp3 with "faad".
+
+</LI></UL>
+
+<H2> New in 1.8:</H2>
+
+<P><UL>
+
+  <LI> Regenerating the HTML tree is faster.
+
+  </LI><LI> The splash page says how many albums, tracks, and total playing
+  time exist in the archive.
+
+  </LI><LI> No HTML files or links are modified unless that modification
+  would change something.
+
+  </LI><LI> Likewise, cddb2mp3.pl does not alter an MP3 file unless
+  there would have been a change to the contents of the file's ID3 tag.
+
+  </LI><LI> When MP3 files have Gronk-incompatible names, it notices
+  that and suggests likely renamings.
+
+  </LI><LI> make-cddb.pl (the script that constructs a .cddb file from
+  a directory of existing MP3 files) is much smarter now: it looks at
+  both file names and ID3 tags.
+
+  </LI><LI> All pages have a charset tag now, to counteract
+  recently-stupidified Apache defaults.
+
+</LI></UL>
+
+<H2> New in 1.7:</H2>
+
+<P><UL>
+
+  <LI> There are mouse-overs describing the functions of the buttons.
+
+  </LI><LI> The playlists have a "kill this song" button which gives the
+  current song a score of -1 (so it won't be auto-selected again.)
+
+</LI></UL>
+
+<H2> New in 1.6:</H2>
+
+<P><UL>
+
+  <LI> Handle multiple album-cover images.
+
+  </LI><LI> Corrected computation of the length of data tracks.
+
+  </LI><LI> If there is a subdirectory called <TT>data</TT>, assume that is
+  the contents of the CDROM portion of the CD, and link the listing 
+  entry for the "data track" to it.
+
+  </LI><LI> Added a <I>"Lots More Songs"</I> link (adds 20 tracks, as
+  opposed to <I>"More Songs"</I> which adds 5.)
+
+  </LI><LI> More Perl broken-unicode workarounds.
+
+</LI></UL>
+
+<H2> New in 1.5:</H2>
+
+<P><UL>
+
+  <LI> Speed improvements: you will really notice the difference if
+  your playlog file has gotten really big!
+
+  </LI><LI> Added support for album cover images (<I>band/album/</I>cover.jpg)
+
+  </LI><LI> Added support for generation of an "index directory": a tree of
+  files that look just like the Gronk control files, but contain links
+  directly to the .mp3 files instead of to the playlist-controlling
+  CGIs.  This is just a way to make a directory full of MP3 files look
+  pretty, by having CDDB-derived HTML listing it.
+
+  </LI><LI> Improved some error messages.
+
+  </LI><LI> xsplash takes -geometry and -placement args now.
+
+</LI></UL>
+
+
+<H2> New in 1.4:</H2>
+
+<P><UL>
+  <LI> Minor HTML tweaks to make it not look like hell in Mozilla.
+  </LI><LI> Changed <TT>freedb-submit.pl</TT> to force people to change
+   the default email address and stop submitting things as me.
+</LI></UL>
+
+
+<H2> New in 1.3:</H2>
+
+<P><UL>
+  <LI> Moved all run-time-written files to a `<TT>DATA</TT>' subdirectory
+       instead of leaving them in the source directory.
+  </LI><LI> Added support for Apache's setuid tricks.
+  </LI><LI> Made it work with
+       <A HREF="https://web.archive.org/web/20010506223651/http://ibiblio.org:80/mp3info/">either</A>
+       <A HREF="ftp://bimbo.hive.no/pub/mp3info/">version</A>
+       of the
+       <A HREF="https://web.archive.org/web/20001211050500/http://freshmeat.net:80/projects/mp3info"><B>mp3info</B></A>
+       program.
+  </LI><LI> Added a `Pause' button.
+  </LI><LI> Various cleanups and minor fixes.
+  <P> 
+       Many thanks to Alan Eldridge &lt;alane@geeksrus.net&gt; for
+       his contributions to this release.
+</LI></UL>
+
+
+<H2> New in 1.2:</H2>
+
+<P><UL>
+  <LI> Support for <A HREF="https://web.archive.org/web/20000304141002/http://freedb.org:80/">FreeDB</A>
+       protocol level 5.
+  </LI><LI> Various minor fixes.
+</LI></UL>
+
+
+<H2> New in 1.1:</H2>
+
+<P><UL>
+  <LI> Some minor code cleanup (perl de-squicking.)
+  </LI><LI> Pages for an artist also include links to tribute albums
+       (compilations of covers of that artist's songs.)
+  </LI><LI> Made Gronk refuse to queue a song if it is already on the 
+       playlist (to avoid accidental multi-clicks.)
+  </LI><LI> The search form also lets you list recent additions within
+       the last <I>N</I> hours or days.
+  </LI><LI> A page is generated that lists bands who appear <I>only</I>
+       on compilation albums.
+  </LI><LI> When generating HTML pages, some trivial spelling mismatches
+       will be flagged (e.g., ``Foo &amp; Bar'' versus ``Foo and Bar''.)
+
+</LI></UL>
+
+
+<H2> New in 1.0:</H2>
+
+<P><UL>
+  <LI> Who am I kidding with this version number nonsense.  
+       Let's call it 1.0 now.
+  </LI><LI> Changed the diagnostic output of build-pages.pl to be more
+       brief and readable, so that the error messages don't just
+       scroll away.
+  </LI><LI> When the playlist is long, it will also display the cumulative
+       duration of the songs (useful for when you're trying to queue
+       up at least <I>N</I> hours of music for a party...)
+  </LI><LI> When generating HTML pages, dim out songs that have low scores.
+  </LI><LI> Various minor bug fixes.
+
+</LI></UL>
+
+
+<H2> New in 0.7:</H2>
+
+<P><UL>
+  <LI> Added ``More Songs'' and ``Shuffle Playlist'' commands.
+  </LI><LI> Made it possible to disable the ``play whole album'' button,
+        since people tend to hit that by accident a lot, and it's
+        a pain to clean up after...
+  </LI><LI> Made a score of -3 mean ``don't play this song even if 
+        someone is foolish enough to request it explicitly.''
+  </LI><LI> Various other minor bug fixes and stability improvements.
+
+</LI></UL>
+
+<H2> New in 0.6:</H2>
+
+<P><UL>
+  <LI> Added a script for generating fake-but-plausible CDDB data
+        given a set of MP3 files.
+  </LI><LI> The display of compilation albums has changed: now there is
+        a secondary frameset, so that it's easier to scroll through
+        a huge list of comps.
+  </LI><LI> The ``recently played'' page now shows whether the songs were
+        random, or requests.
+
+</LI></UL>
+
+<H2> New in 0.5:</H2>
+
+<P><UL>
+  <LI> There is now a search form, that lets you do regexp searches
+   though all song names, band names, and album titles.
+  </LI><LI> There is a link that shows you songs that were recently played,
+   in addition to upcoming songs.
+  </LI><LI> A couple of minor bug fixes.
+
+</LI></UL>
+
+<H2> New in 0.4:</H2>
+
+<P><UL>
+  <LI> There is another column of icons in the playlist, allowing you
+   to move an indicated song to the top or bottom of the list;
+
+  </LI><LI> When you explicitly add a song to the playlist, it is added
+   after any other explicitly-<WBR>added songs, but before any
+   randomly-<WBR>selected songs that might already be present.
+
+  </LI><LI> When songs are being randomly chosen, it won't choose a song if
+   it has already been played recently, or if another song by that
+   band has been played recently (both of these thresholds are 
+   tweakable.)
+
+</LI></UL>
+
+</UL>
+
+
+<H2><A NAME="download">Download:</A></H2>
+
+<P><UL>
+
+<P> Here is the <B><I>final</I></B> release of Gronk as a gzipped tar
+file.  There will not be another!
+
+<P><TABLE WIDTH="80%" CELLPADDING=16 CELLSPACING=0 BORDER=0 BGCOLOR="#003300">
+ <TR>
+  <TD WIDTH=12 BGCOLOR="#003300"><BR></TD>
+  <TD BGCOLOR="#003300">
+   <FONT COLOR="#22FF22" SIZE="+2">
+    <A HREF="https://www.jwz.org/gronk/gronk-1.9.tar.gz"><B>gronk-1.9.tar.gz</B></A>
+   </FONT>
+  </TD>
+  <TD WIDTH=12 BGCOLOR="#003300"><BR></TD>
+ </TR>
+</TABLE>
+
+<P> Read the <TT>README</TT>, edit <TT>config.pl</TT>, and don't expect
+it to work out of the box without some tweaking.  ``It works for me.''
+(Other people are using it successfully, however.)
+
+</UL>
+
+
+
+<H2><A NAME="demo">Demo:</A></H2>
+
+<UL>
+
+<P> Here <STRIKE>is</STRIKE> <I>was</I> a demo version of the Gronk UI.  This is what it looks like
+when running, except that when you click on things, it won't actually
+cause sound to come out of my speakers because the CGIs are stubbed
+out.
+
+<P><TABLE WIDTH="80%" CELLPADDING=16 CELLSPACING=0 BORDER=0 BGCOLOR="#003300">
+ <TR>
+  <TD WIDTH=12 BGCOLOR="#003300"><BR></TD>
+  <TD BGCOLOR="#003300">
+   <FONT COLOR="#22FF22" SIZE="+2">
+<!--    <A HREF="demo/"><B>vacuum-sealed demo</B></A>-->
+    <B><STRIKE>vacuum-sealed demo</STRIKE></B>
+   </FONT>
+  </TD>
+  <TD WIDTH=12 BGCOLOR="#003300"><BR></TD>
+ </TR>
+</TABLE>
+
+
+</UL>
+
+
+<BR>
+<P><FONT SIZE="-1">
+ (Oh, in case you were wondering about the name, ``gronk'' is the
+sound of disk thrashing.)
+</FONT>
+<P>
+
+
+
+
+<P ALIGN=CENTER><B><FONT SIZE="+3">_____________________________</FONT></B></P>
+
+<P ALIGN=CENTER>
+
+<A HREF="https://www.jwz.org/"><IMG ALT="[ up ]"
+   CLASS="compass" SRC="https://www.jwz.org/compass1.gif"
+ ONMOUSEOVER='this.src="https://www.jwz.org/compass2.gif"'
+  ONMOUSEOUT='this.src="https://www.jwz.org/compass1.gif"'></A>
+
+</BODY>
+
+<!-- Mirrored from www.jwz.org/gronk/ by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 16 Mar 2022 09:55:22 GMT -->
+</HTML>
